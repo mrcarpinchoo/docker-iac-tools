@@ -1,0 +1,7 @@
+# Custom Docker Compose
+docker-compose.dev.*.yml
+
+# Environment variables
+.env
+.env.*
+!.env.example
