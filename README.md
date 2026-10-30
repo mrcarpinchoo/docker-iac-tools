@@ -5,7 +5,7 @@ This setup runs AWS CLI and Terraform as long-lived containers using Docker Comp
 ## How It Works
 
 - `image`: uses the official AWS CLI and Terraform Docker images.
-- `container_name`: names the Terraform container `terraform`, so it can be targeted with `docker exec` from any directory.
+- `container_name`: names the containers `aws-cli` and `terraform`, so they can be targeted with `docker exec` from any directory.
 - `entrypoint`: overrides the default entrypoint with `tail -f /dev/null` to keep containers alive.
 - `working_dir`: sets `/workspace` as the default directory inside each container.
 - `user`: runs as your user and group IDs (`UID` and `GID`, defaulting to `1000`) so files created in a mounted volume are owned by you, not root.
@@ -68,9 +68,9 @@ docker exec -it <container-name> sh
 
 AWS CLI:
 
-- `docker exec <container-name> aws s3 ls`
-- `docker exec <container-name> aws sts get-caller-identity`
-- `docker exec <container-name> aws ec2 describe-instances`
+- `docker exec aws-cli aws s3 ls`
+- `docker exec aws-cli aws sts get-caller-identity`
+- `docker exec aws-cli aws ec2 describe-instances`
 
 Terraform:
 
@@ -87,6 +87,7 @@ To give a container access to local files, add a `volumes` entry to `compose.yml
 ```yaml
 services:
   aws-cli:
+    container_name: aws-cli
     image: amazon/aws-cli:latest
     working_dir: /workspace
     entrypoint: ["tail", "-f", "/dev/null"]
@@ -129,7 +130,7 @@ docker compose -f compose.dev.<name>.yml up -d
 
 Any file matching `compose.dev.*.yml` is listed in `.gitignore`, so local changes will not be tracked.
 
-> **Note**: Container names must be unique, so only one container named `terraform` can run at a time. To run several setups side by side, change `container_name` in the copy.
+> **Note**: Container names must be unique, so only one container named `aws-cli` or `terraform` can run at a time. To run several setups side by side, change `container_name` in the copy.
 
 ---
 
