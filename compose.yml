@@ -10,6 +10,7 @@ services:
       - .env
 
   terraform:
+    container_name: terraform
     image: hashicorp/terraform:latest
     working_dir: /workspace
     entrypoint: ["tail", "-f", "/dev/null"]

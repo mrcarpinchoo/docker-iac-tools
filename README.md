@@ -5,6 +5,7 @@ This setup runs AWS CLI and Terraform as long-lived containers using Docker Comp
 ## How It Works
 
 - `image`: uses the official AWS CLI and Terraform Docker images.
+- `container_name`: names the Terraform container `terraform`, so it can be targeted with `docker exec` from any directory.
 - `entrypoint`: overrides the default entrypoint with `tail -f /dev/null` to keep containers alive.
 - `working_dir`: sets `/workspace` as the default directory inside each container.
 - `user`: runs as your user and group IDs (`UID` and `GID`, defaulting to `1000`) so files created in a mounted volume are owned by you, not root.
@@ -73,9 +74,11 @@ AWS CLI:
 
 Terraform:
 
-- `docker exec <container-name> terraform init`
-- `docker exec <container-name> terraform plan`
-- `docker exec <container-name> terraform apply`
+- `docker exec terraform terraform init`
+- `docker exec terraform terraform plan`
+- `docker exec -it terraform terraform apply`
+
+`apply` and `destroy` ask for confirmation, so they need `-it` to read your input.
 
 ### Mounting a Volume
 
@@ -125,6 +128,8 @@ docker compose -f compose.dev.<name>.yml up -d
 ```
 
 Any file matching `compose.dev.*.yml` is listed in `.gitignore`, so local changes will not be tracked.
+
+> **Note**: Container names must be unique, so only one container named `terraform` can run at a time. To run several setups side by side, change `container_name` in the copy.
 
 ---
 
