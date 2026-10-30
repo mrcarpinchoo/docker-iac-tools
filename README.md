@@ -26,9 +26,6 @@ This setup runs AWS CLI and Terraform as long-lived containers using Docker Comp
 
     CLOUDFLARE_API_TOKEN=
     ```
-
-Only fill in the credentials for the provider you use. The Terraform Cloudflare provider reads `CLOUDFLARE_API_TOKEN` from the environment automatically, so leave `api_token` out of the `provider "cloudflare"` block.
-
 ## Terraform Variables
 
 Keep secrets in `.env` and non-secret configuration (account IDs, zone IDs, resource names) in a `.tfvars` file.
