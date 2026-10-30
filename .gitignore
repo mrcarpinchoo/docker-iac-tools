@@ -5,6 +5,3 @@ compose.dev.*.yml
 .env
 .env.*
 !.env.example
-
-# Terraform variables
-*.tfvars
