@@ -29,19 +29,9 @@ This setup runs AWS CLI and Terraform as long-lived containers using Docker Comp
     ```
 ## Terraform Variables
 
-Keep secrets in `.env` and non-secret configuration (account IDs, zone IDs, resource names) in a `.tfvars` file.
+Keep secrets in `.env` and non-secret configuration (account IDs, zone IDs, resource names) in a `.tfvars` file inside the Terraform project you mount into `/workspace`. Each value needs a matching `variable` block in that project's code.
 
-1. Create a `terraform.tfvars` file from the example in the directory where Terraform runs:
-    ```bash
-    cp terraform.tfvars.example terraform.tfvars
-    ```
-2. Populate the values. Each one needs a matching `variable` block in your Terraform code:
-    ```hcl
-    cloudflare_account_id = ""
-    cloudflare_zone_id    = ""
-    ```
-
-Terraform loads `terraform.tfvars` and `*.auto.tfvars` automatically. Any other name, such as `prod.tfvars`, must be passed with `-var-file=prod.tfvars`. All `*.tfvars` files are listed in `.gitignore`.
+Terraform loads `terraform.tfvars` and `*.auto.tfvars` automatically. Any other name, such as `prod.tfvars`, must be passed with `-var-file=prod.tfvars`.
 
 ## Usage
 
