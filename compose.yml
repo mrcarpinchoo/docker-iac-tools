@@ -3,6 +3,9 @@ services:
     image: amazon/aws-cli:latest
     working_dir: /workspace
     entrypoint: ["tail", "-f", "/dev/null"]
+    user: "${UID:-1000}:${GID:-1000}"
+    environment:
+      HOME: /tmp
     env_file:
       - .env
 
@@ -10,5 +13,8 @@ services:
     image: hashicorp/terraform:latest
     working_dir: /workspace
     entrypoint: ["tail", "-f", "/dev/null"]
+    user: "${UID:-1000}:${GID:-1000}"
+    environment:
+      HOME: /tmp
     env_file:
       - .env
